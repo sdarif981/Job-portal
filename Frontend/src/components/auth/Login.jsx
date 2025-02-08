@@ -34,7 +34,7 @@ const Login = () => {
         },
         withCredentials: true, // Ensure cookies are sent with the request
       });
-      console.log(res.data); // Log response data
+      //console.log(res.data); // Log response data
       if (res.data.success) {
         dispatch(setUser(res.data.user))
         navigate("/"); // Redirect after successful login
