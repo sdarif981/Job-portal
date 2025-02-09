@@ -16,10 +16,7 @@ const _dirname=path.resolve();
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-app.use(express.static(path.join(_dirname,"/frontend/dist")));
-app.get('*',(_,res)=>{
-  res.sendFile(path.resolve(_dirname,"frontend","dist","index.html"));
-})
+
 const corsOptions = {
   origin: 'http://localhost:5173',
   credentials: true
@@ -38,11 +35,10 @@ app.listen(port, () => {
   console.log(`Server listening at http://localhost:${port}`);
 });
 
-app.use(express.static(path.join(__dirname, "frontend", "dist")));
-
-  app.get("*", (req, res) => {
-    res.sendFile(path.resolve(__dirname, "frontend", "dist", "index.html"));
-  });
+app.use(express.static(path.join(_dirname,"/frontend/dist")));
+app.get('*',(_,res)=>{
+  res.sendFile(path.resolve(_dirname,"frontend","dist","index.html"));
+})
 
 // Error Handler
 app.use((err, req, res, next) => {
