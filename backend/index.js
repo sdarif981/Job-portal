@@ -11,13 +11,15 @@ import path from 'path';
 dotenv.config();
 
 const app = express();
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
+const _dirname=path.resolve();
 // Middleware
 app.use(express.json());
 app.use(express.urlencoded({ extended: true }));
 app.use(cookieParser());
-
+app.use(express.static(path.join(_dirname,"/frontend/dist")));
+app.get('*',(_,res)=>{
+  res.sendFile(path.resolve(_dirname,"frontend","dist","index.html"));
+})
 const corsOptions = {
   origin: 'http://localhost:5173',
   credentials: true
