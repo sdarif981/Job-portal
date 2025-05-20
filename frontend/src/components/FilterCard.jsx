@@ -3,6 +3,9 @@ import { RadioGroup, RadioGroupItem } from './ui/radio-group';
 import { Label } from './ui/label';
 import { useDispatch } from 'react-redux';
 import { setSearchedQuery } from '@/redux/jobSlice';
+import { Button } from './ui/button';
+import { Bookmark } from 'lucide-react';
+import { useNavigate } from 'react-router-dom';
 
 const filterData = [
     {
@@ -27,7 +30,7 @@ const filterData = [
 const FilterCard = () => {
     const [selectedValue, setSelectedValue] = useState('All Jobs'); // Default to "All Jobs"
     const dispatch = useDispatch();
-
+   const navigate=useNavigate();
     const changeHandler = (value) => {
         setSelectedValue(value);
     };
@@ -38,6 +41,15 @@ const FilterCard = () => {
 
     return (
         <div className='w-full bg-white p-3 rounded-md'>
+            <div className="w-full flex justify-start mb-4">
+  <Button
+    onClick={() => navigate('/saved')}
+    className="bg-[#ffffff] hover:bg-[#dbd8dc] border border-black-200 text-black font-semibold rounded-xl"
+  >
+    <Bookmark className="h-4 w-4 mr-2" />
+    Saved Jobs
+  </Button>
+</div>
             <h1 className='font-bold text-lg'>Filter Jobs</h1>
             <hr className='mt-3' />
             <RadioGroup value={selectedValue} onValueChange={changeHandler}>

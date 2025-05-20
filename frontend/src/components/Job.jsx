@@ -4,6 +4,9 @@ import { Bookmark } from 'lucide-react'
 import { Avatar, AvatarImage } from './ui/avatar'
 import { Badge } from './ui/badge'
 import { useNavigate } from 'react-router-dom'
+import { toast } from 'sonner'
+import { JOB_API_END_POINT } from '@/utils/constant'
+import axios from 'axios'
 
 const Job = ({job}) => {
     const navigate = useNavigate();
@@ -16,11 +19,33 @@ const Job = ({job}) => {
         return Math.floor(timeDifference/(1000*24*60*60));
     }
     
+     const SaveForLater = async (jobId) => {
+        try {
+            
+
+            const response = await axios.post(
+                `${JOB_API_END_POINT}/save`,
+                  { jobId },
+                 {withCredentials: true}
+                
+                
+            );
+
+            if (response.data.success) {
+                toast.success("Job saved successfully!");
+            } else {
+                toast.error(response.data.message || "Couldn't save job.");
+            }
+        } catch (error) {
+          toast.error( error.response?.data?.message||"An error occurred while saving the job.");
+        }
+    }
+
     return (
         <div className='p-5 rounded-md shadow-xl bg-white border border-gray-100'>
             <div className='flex items-center justify-between'>
                 <p className='text-sm text-gray-500'>{daysAgoFunction(job?.createdAt) === 0 ? "Today" : `${daysAgoFunction(job?.createdAt)} days ago`}</p>
-                <Button variant="outline" className="rounded-full" size="icon"><Bookmark /></Button>
+                <Button onClick={()=>{SaveForLater(job._id )}} variant="outline" className="rounded-full" size="icon"><Bookmark  /></Button>
             </div>
 
             <div className='flex items-center gap-2 my-2'>
@@ -46,7 +71,7 @@ const Job = ({job}) => {
             </div>
             <div className='flex items-center gap-4 mt-4'>
                 <Button onClick={()=> navigate(`/description/${job?._id}`)} variant="outline">Details</Button>
-                <Button className="bg-[#7209b7]">Save For Later</Button>
+                <Button className="bg-[#7209b7]" onClick={()=>{SaveForLater(job._id )}} >Save For Later</Button>
             </div>
         </div>
     )

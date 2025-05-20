@@ -5,11 +5,14 @@ import CategoryCarousel from './CategoryCarousel'
 import LatestJobs from './LatestJobs'
 import Footer from './shared/Footer'
 import useGetAllJobs from '@/hooks/useGetAllJobs'
-import { useSelector } from 'react-redux'
+import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
+import { setSearchedQuery } from '@/redux/jobSlice'
 
 const Home = () => {
   useGetAllJobs();
+  const dispatch = useDispatch();
+
   const { user } = useSelector(store => store.auth);
   const navigate = useNavigate();
   useEffect(() => {
@@ -17,6 +20,8 @@ const Home = () => {
       navigate("/admin/companies");
     }
   }, []);
+  
+
   return (
     <div>
       <Navbar />
@@ -24,6 +29,7 @@ const Home = () => {
       <CategoryCarousel />
       <LatestJobs />
       <Footer />
+      
     </div>
   )
 }
