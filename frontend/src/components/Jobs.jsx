@@ -2,16 +2,17 @@ import React, { useEffect, useState } from 'react'
 import Navbar from './shared/Navbar'
 import FilterCard from './FilterCard'
 import Job from './Job';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { motion } from 'framer-motion';
 import useGetAllJobs from '@/hooks/useGetAllJobs';
+import { setSearchedQuery } from '@/redux/jobSlice';
 
 // const jobsArray = [1, 2, 3, 4, 5, 6, 7, 8];
 
 const Jobs = () => {
     const { allJobs, searchedQuery } = useSelector(store => store.job);
     const [filterJobs, setFilterJobs] = useState(allJobs);
-    
+    const dispatch = useDispatch();
      useEffect(() => {
         return () => {
           dispatch(setSearchedQuery(""));
