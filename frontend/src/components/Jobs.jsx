@@ -13,16 +13,11 @@ const Jobs = () => {
     const [filterJobs, setFilterJobs] = useState(allJobs);
 
     // ✅ Set query to "" when page loads, and reset on unmount
-    useEffect(() => {
-        dispatch(setSearchedQuery("")); // set to empty on entry
+  useEffect(() => {
+  dispatch(setSearchedQuery("")); // Reset query when Jobs page loads
+}, []);
 
-        return () => {
-            dispatch(setSearchedQuery("")); // reset on exit
-        };
-    }, []);
-
-    // ✅ fetch fresh jobs when query changes (will be "" now)
-    useGetAllJobs();
+useGetAllJobs(""); // ✅ Explicitly fetch with empty string only once
 
     // ✅ local filter (based on typed value, if any)
     useEffect(() => {
