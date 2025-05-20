@@ -16,6 +16,7 @@ const Browse = () => {
             dispatch(setSearchedQuery(""));
         }
     },[])
+    
     return (
         <div>
             <Navbar />

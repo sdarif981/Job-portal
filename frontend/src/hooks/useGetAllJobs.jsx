@@ -10,6 +10,9 @@ const useGetAllJobs = () => {
     useEffect(()=>{
         const fetchAllJobs = async () => {
             try {
+                console.log("searchedQuery", searchedQuery);
+                const keyword = searchedQuery || "";
+                console.log("keyword", keyword);
                 const res = await axios.get(`${JOB_API_END_POINT}/get?keyword=${searchedQuery}`,{withCredentials:true});
                 if(res.data.success){
                   console.log(res.data.jobs);
