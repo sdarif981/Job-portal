@@ -20,9 +20,12 @@ const Home = () => {
     if (user?.role === 'recruiter') {
       navigate("/admin/companies");
     }
-     dispatch(setSearchedQuery(""));
+     
   }, []);
   
+  useEffect(() => {
+  dispatch(setSearchedQuery("")); // reset on entering
+}, []);
 
   return (
     <div>
