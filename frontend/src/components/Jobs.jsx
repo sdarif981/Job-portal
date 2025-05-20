@@ -13,12 +13,7 @@ const Jobs = () => {
     const { allJobs, searchedQuery } = useSelector(store => store.job);
     const [filterJobs, setFilterJobs] = useState(allJobs);
     const dispatch = useDispatch();
-     useEffect(() => {
-        return () => {
-          dispatch(setSearchedQuery(""));
-        };
-      }, []);
-      useGetAllJobs();
+   
     useEffect(() => {
         if (searchedQuery) {
             const filteredJobs = allJobs.filter((job) => {
