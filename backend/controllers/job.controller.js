@@ -57,7 +57,8 @@ export const postJob = async (req, res) => {
 // student k liye
 export const getAllJobs = async (req, res) => {
   try {
-    const keyword = req.query.keyword || "";
+    
+    const keyword = req.query.keyword?.trim();
     const query = {
       $or: [
         { title: { $regex: keyword, $options: "i" } },
