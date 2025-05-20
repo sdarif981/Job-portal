@@ -7,24 +7,35 @@ import { motion } from 'framer-motion';
 import useGetAllJobs from '@/hooks/useGetAllJobs';
 import { setSearchedQuery } from '@/redux/jobSlice';
 
-// const jobsArray = [1, 2, 3, 4, 5, 6, 7, 8];
-
 const Jobs = () => {
+    const dispatch = useDispatch();
     const { allJobs, searchedQuery } = useSelector(store => store.job);
     const [filterJobs, setFilterJobs] = useState(allJobs);
-    const dispatch = useDispatch();
-   
+
+    // ✅ Set query to "" when page loads, and reset on unmount
+    useEffect(() => {
+        dispatch(setSearchedQuery("")); // set to empty on entry
+
+        return () => {
+            dispatch(setSearchedQuery("")); // reset on exit
+        };
+    }, []);
+
+    // ✅ fetch fresh jobs when query changes (will be "" now)
+    useGetAllJobs();
+
+    // ✅ local filter (based on typed value, if any)
     useEffect(() => {
         if (searchedQuery) {
             const filteredJobs = allJobs.filter((job) => {
                 return job.title.toLowerCase().includes(searchedQuery.toLowerCase()) ||
                     job.description.toLowerCase().includes(searchedQuery.toLowerCase()) ||
-                    job.location.toLowerCase().includes(searchedQuery.toLowerCase())||
-                    job.jobType.toLowerCase().includes(searchedQuery.toLowerCase())
-            })
-            setFilterJobs(filteredJobs)
+                    job.location.toLowerCase().includes(searchedQuery.toLowerCase()) ||
+                    job.jobType.toLowerCase().includes(searchedQuery.toLowerCase());
+            });
+            setFilterJobs(filteredJobs);
         } else {
-            setFilterJobs(allJobs)
+            setFilterJobs(allJobs);
         }
     }, [allJobs, searchedQuery]);
 
@@ -34,9 +45,7 @@ const Jobs = () => {
             <div className='max-w-7xl mx-auto mt-5'>
                 <div className='flex gap-5'>
                     <div className='w-20%'>
-                        
                         <FilterCard />
-                        
                     </div>
                     {
                         filterJobs.length <= 0 ? <span>Job not found</span> : (
@@ -60,10 +69,8 @@ const Jobs = () => {
                     }
                 </div>
             </div>
-
-
         </div>
-    )
-}
+    );
+};
 
-export default Jobs
+export default Jobs;
