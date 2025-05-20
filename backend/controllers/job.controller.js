@@ -57,33 +57,37 @@ export const postJob = async (req, res) => {
 // student k liye
 export const getAllJobs = async (req, res) => {
   try {
-    
-    const keyword = req.query.keyword?.trim();
-    const query = {
-      $or: [
-        { title: { $regex: keyword, $options: "i" } },
-        { description: { $regex: keyword, $options: "i" } },
-      ],
-    };
-    const jobs = await Job.find(query)
-      .populate({
-        path: "company",
-      })
-      .sort({ createdAt: -1 });
-    if (!jobs) {
-      return res.status(404).json({
-        message: "Jobs not found.",
-        success: false,
-      });
+    const keyword = req.query.keyword?.trim(); // trim to handle whitespace
+
+    // Build query based on keyword
+    let query = {};
+    if (keyword) {
+      query = {
+        $or: [
+          { title: { $regex: keyword, $options: "i" } },
+          { description: { $regex: keyword, $options: "i" } },
+        ],
+      };
     }
+
+    const jobs = await Job.find(query)
+      .populate({ path: "company" })
+      .sort({ createdAt: -1 });
+
     return res.status(200).json({
       jobs,
       success: true,
     });
+
   } catch (error) {
-    console.log(error);
+    console.error(error);
+    return res.status(500).json({
+      message: "Server error while fetching jobs.",
+      success: false,
+    });
   }
 };
+
 // student
 export const getJobById = async (req, res) => {
   try {
