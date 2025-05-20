@@ -1,3 +1,4 @@
+import { setLoading } from '@/redux/authSlice'
 import { setAllJobs } from '@/redux/jobSlice'
 import { JOB_API_END_POINT } from '@/utils/constant'
 import axios from 'axios'
@@ -10,6 +11,7 @@ const useGetAllJobs = () => {
     useEffect(()=>{
         const fetchAllJobs = async () => {
             try {
+                dispatch(setLoading(true));
                 console.log("searchedQuery", searchedQuery);
                 const keyword = searchedQuery || "";
                 // console.log("keyword", keyword);
@@ -20,6 +22,9 @@ const useGetAllJobs = () => {
                 }
             } catch (error) {
                 console.log(error);
+            }
+            finally{
+                dispatch(setLoading(false));
             }
         }
         fetchAllJobs();
