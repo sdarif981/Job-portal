@@ -57,10 +57,15 @@ export const postJob = async (req, res) => {
 // student k liye
 export const getAllJobs = async (req, res) => {
   try {
-    const keyword = req.query.keyword?.trim(); // trim to handle whitespace
+    let keyword = req.query.keyword;
 
-    // Build query based on keyword
+    // Sanitize keyword
+    if (!keyword || keyword.trim() === '' || keyword.trim() === '""') {
+      keyword = null;
+    }
+
     let query = {};
+
     if (keyword) {
       query = {
         $or: [
@@ -80,13 +85,14 @@ export const getAllJobs = async (req, res) => {
     });
 
   } catch (error) {
-    console.error(error);
+    console.error("Error fetching jobs:", error);
     return res.status(500).json({
       message: "Server error while fetching jobs.",
       success: false,
     });
   }
 };
+
 
 // student
 export const getJobById = async (req, res) => {
