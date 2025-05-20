@@ -8,6 +8,7 @@ import useGetAllJobs from '@/hooks/useGetAllJobs'
 import { useDispatch, useSelector } from 'react-redux'
 import { useNavigate } from 'react-router-dom'
 import { setSearchedQuery } from '@/redux/jobSlice'
+import { use } from 'react'
 
 const Home = () => {
   useGetAllJobs();
@@ -19,6 +20,7 @@ const Home = () => {
     if (user?.role === 'recruiter') {
       navigate("/admin/companies");
     }
+     dispatch(setSearchedQuery(""));
   }, []);
   
 

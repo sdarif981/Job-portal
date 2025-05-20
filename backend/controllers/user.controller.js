@@ -92,7 +92,7 @@ export const login = async (req, res) => {
             profile: user.profile
         }
 
-        return res.status(200).cookie("token", token, { maxAge: 1 * 24 * 60 * 60 * 1000, httpsOnly: true,secure:true, sameSite: 'None' }).json({
+        return res.status(200).cookie("token", token, { maxAge: 1 * 24 * 60 * 60 * 1000, httpOnly: true,secure:true, sameSite: 'None' }).json({
             message: `Welcome back ${user.fullname}`,
             user,
             success: true
@@ -103,10 +103,19 @@ export const login = async (req, res) => {
 }
 export const logout = async (req, res) => {
     try {
-        return res.status(200).cookie("token", "", { maxAge: 0, }).json({
-            message: "Logged out successfully.",
-            success: true
-        })
+       return res
+  .status(200)
+  .cookie("token", "", {
+    maxAge: 0,
+    httpOnly: true,
+    secure: true,
+    sameSite: 'None'
+  })
+  .json({
+    message: "Logged out successfully.",
+    success: true
+  });
+
     } catch (error) {
         console.log(error);
     }
